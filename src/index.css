@@ -1,0 +1,513 @@
+@import "tailwindcss";
+
+/* ============================================================
+   LIFE RPG — DESIGN SYSTEM
+   Dark futuristic premium dashboard
+   ============================================================ */
+
+:root {
+  --background: #06080b;
+  --surface: #0c1015;
+  --surface-hover: #12181f;
+  --surface-elevated: #161d26;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text-primary: #e9eff6;
+  --text-secondary: #8a97a8;
+  --text-tertiary: #5d6875;
+  --accent: #2fe6a4;
+  --accent-secondary: #22d3ee;
+  --violet: #a78bfa;
+  --success: #2fe6a4;
+  --warning: #f7b955;
+  --danger: #fb6a7e;
+  --glow: rgba(47, 230, 164, 0.18);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.7);
+}
+
+.theme-light {
+  --background: #f4f6f9;
+  --surface: #ffffff;
+  --surface-hover: #f7f9fc;
+  --surface-elevated: #eef2f7;
+  --border: rgba(9, 20, 34, 0.09);
+  --border-strong: rgba(9, 20, 34, 0.16);
+  --text-primary: #0d1520;
+  --text-secondary: #5b6878;
+  --text-tertiary: #8a95a3;
+  --accent: #0aa87a;
+  --accent-secondary: #0e9fc4;
+  --violet: #7c5cf5;
+  --success: #0aa87a;
+  --warning: #c07d0a;
+  --danger: #dc3a56;
+  --glow: rgba(10, 168, 122, 0.14);
+  --shadow-card: 0 1px 2px rgba(16, 30, 48, 0.06), 0 12px 28px -14px rgba(16, 30, 48, 0.22);
+}
+
+@theme inline {
+  --color-bg: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-hover);
+  --color-surface-3: var(--surface-elevated);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-faint: var(--text-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-secondary);
+  --color-violet: var(--violet);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --radius-card: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "tnum";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+}
+
+#root {
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+::selection {
+  background: var(--accent);
+  color: #04120c;
+}
+
+/* Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+/* Focus ring — accessible and consistent */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Native-app feel on phones (especially when installed to the home screen) */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* iOS zooms into inputs smaller than 16px — keep them at 16px on phones */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+@media (display-mode: standalone) {
+  body {
+    overscroll-behavior: none;
+  }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ---------- Utilities ---------- */
+
+@utility glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+@utility card-surface {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--surface-elevated) 55%, var(--surface)) 0%,
+    var(--surface) 60%
+  );
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* ============================================================
+   Responsive layout & safe-area containers
+   Explicit CSS rules guarantee safe-area and bottom-nav clearance
+   across iOS Safari, Android Chrome, and all viewport widths.
+   ============================================================ */
+
+.app-header {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.app-main {
+  width: 100%;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  .app-main {
+    padding-bottom: 48px;
+  }
+}
+
+.app-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
+.app-fab-ai {
+  position: fixed;
+  right: 12px;
+  bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  .app-fab-ai {
+    right: 24px;
+    bottom: 24px;
+  }
+}
+
+.fx-toast-top {
+  top: calc(12px + env(safe-area-inset-top, 0px));
+}
+
+.fx-toast-bottom {
+  bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 640px) {
+  .fx-toast-top {
+    top: calc(18px + env(safe-area-inset-top, 0px));
+  }
+  .fx-toast-bottom {
+    bottom: 24px;
+  }
+}
+
+/* ============================================================
+   Responsive Stat Grids (4-card and 5-card summary rows)
+   - < 350px (e.g. 320px): 1 column
+   - 350px–1023px: 2 equal columns; if 5 cards, the 5th spans full width
+   - >= 1024px: 4 or 5 equal columns
+   ============================================================ */
+
+.stats-grid-4,
+.stats-grid-5 {
+  display: grid;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 350px) {
+  .stats-grid-4,
+  .stats-grid-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stats-grid-5 > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 640px) {
+  .stats-grid-4,
+  .stats-grid-5 {
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .stats-grid-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .stats-grid-5 > :last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+}
+
+@utility text-gradient {
+  background: linear-gradient(92deg, var(--accent) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Habit Matrix: horizontal scroll is contained to this element only.
+   The page itself never scrolls sideways. */
+.mx-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+.mx-scroll::-webkit-scrollbar {
+  height: 7px;
+}
+.mx-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes lr-pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--glow);
+  }
+  50% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+@keyframes lr-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes lr-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes lr-sparkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.85) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15) rotate(20deg);
+  }
+}
+
+@keyframes lr-particle {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.4);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--dx, 0px), var(--dy, -120px), 0) scale(1);
+  }
+}
+
+@keyframes lr-ring {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@keyframes lr-check {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.anim-glow {
+  animation: lr-pulse-glow 2.4s ease-in-out infinite;
+}
+.anim-float {
+  animation: lr-float 5s ease-in-out infinite;
+}
+.anim-sparkle {
+  animation: lr-sparkle 2.2s ease-in-out infinite;
+}
+.anim-check {
+  animation: lr-check 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface-hover) 80%, transparent);
+  border-radius: 10px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--text-primary) 6%, transparent),
+    transparent
+  );
+  animation: lr-shimmer 1.6s infinite;
+}
+
+/* Range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border-strong);
+  outline-offset: 6px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--background);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--background);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* User-controlled motion preference from Settings */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}

@@ -1,0 +1,103 @@
+import {
+  Award,
+  BookOpen,
+  Brain,
+  Briefcase,
+  Car,
+  Check,
+  CheckCircle2,
+  Cigarette,
+  Circle,
+  Coins,
+  Crown,
+  Dumbbell,
+  Film,
+  Flag,
+  Flame,
+  Gift,
+  Hammer,
+  Heart,
+  HeartPulse,
+  Home,
+  Laptop,
+  LineChart,
+  PiggyBank,
+  Plane,
+  Repeat,
+  Scale,
+  Scroll,
+  Shield,
+  ShoppingBag,
+  Sparkles,
+  Star,
+  Sunrise,
+  Swords,
+  Target,
+  TrendingUp,
+  Trophy,
+  Users,
+  Utensils,
+  Wallet,
+  Zap,
+} from "lucide-react";
+import type { ComponentType } from "react";
+
+export type IconProps = {
+  size?: number;
+  className?: string;
+  strokeWidth?: number;
+};
+
+/** Single registry so every icon in the app shares the same visual style. */
+export const ICONS: Record<string, ComponentType<IconProps>> = {
+  award: Award,
+  book: BookOpen,
+  brain: Brain,
+  briefcase: Briefcase,
+  car: Car,
+  check: Check,
+  "check-circle": CheckCircle2,
+  cigarette: Cigarette,
+  circle: Circle,
+  coins: Coins,
+  crown: Crown,
+  dumbbell: Dumbbell,
+  film: Film,
+  flag: Flag,
+  flame: Flame,
+  gift: Gift,
+  hammer: Hammer,
+  heart: Heart,
+  "heart-pulse": HeartPulse,
+  home: Home,
+  laptop: Laptop,
+  "line-chart": LineChart,
+  piggy: PiggyBank,
+  plane: Plane,
+  repeat: Repeat,
+  scale: Scale,
+  scroll: Scroll,
+  shield: Shield,
+  "shopping-bag": ShoppingBag,
+  sparkles: Sparkles,
+  star: Star,
+  sunrise: Sunrise,
+  swords: Swords,
+  target: Target,
+  "trending-up": TrendingUp,
+  trophy: Trophy,
+  users: Users,
+  utensils: Utensils,
+  wallet: Wallet,
+  zap: Zap,
+};
+
+export function Icon({
+  name,
+  size = 18,
+  className,
+  strokeWidth = 1.8,
+}: IconProps & { name: string }) {
+  const Cmp = ICONS[name] || Circle;
+  return <Cmp size={size} className={className} strokeWidth={strokeWidth} />;
+}
