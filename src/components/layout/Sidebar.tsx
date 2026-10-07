@@ -17,7 +17,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className="fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-line bg-surface/80 backdrop-blur-xl md:flex md:w-[68px] xl:w-[240px]"
+      className="fixed inset-y-0 left-0 z-40 hidden w-[68px] flex-col overflow-y-auto overflow-x-hidden border-r border-line bg-surface/80 backdrop-blur-xl md:flex xl:w-[240px]"
       aria-label={tr("app.tagline")}
     >
       <button
@@ -71,7 +71,7 @@ export function Sidebar() {
       <div className="shrink-0 border-t border-line p-2 xl:p-3">
         <button
           onClick={() => navigate("character")}
-          className="flex w-full items-center gap-2.5 rounded-xl p-2 text-left transition hover:bg-surface-2 md:flex-col xl:flex-row"
+          className="flex w-full items-center gap-2.5 rounded-xl p-2 text-left transition hover:bg-surface-2 md:justify-center xl:justify-start"
         >
           <Avatar src={data.profile.avatar} name={data.profile.name} size={38} />
           <span className="hidden min-w-0 flex-1 xl:block">
@@ -90,7 +90,7 @@ export function Sidebar() {
               />
             </span>
             <span className="mt-1 flex items-center justify-between gap-1 text-[10px] text-faint">
-              <span className="truncate tabular">{compactNumber(info.xpIntoLevel)}/{compactNumber(info.xpForNext)}</span>
+              <span className="num truncate">{compactNumber(info.xpIntoLevel)}/{compactNumber(info.xpForNext)}</span>
               {streak > 0 ? (
                 <span className="flex shrink-0 items-center gap-0.5 text-warning">
                   <Flame size={9} />

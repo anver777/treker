@@ -70,12 +70,12 @@ export default function AnalyticsPage() {
         />
       </div>
 
-      <div className="stats-grid-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatTile
           label={t("an.xpIn", { n: days })}
           value={formatNumber(totalXpIn)}
           hint={t("an.avgPerDay", { n: compactNumber(days > 0 ? totalXpIn / days : 0) })}
-          icon={<Zap size={14} />}
+          icon={<Zap size={15} />}
         />
         <StatTile label={t("an.bestDay")} value={formatNumber(bestDay?.value || 0)} hint={bestDay?.label || "—"} tone="violet" />
         <StatTile
@@ -90,7 +90,7 @@ export default function AnalyticsPage() {
           value={formatPercent(memo.habitsOverview.rate)}
           hint={t("an.checkins", { n: memo.habitsOverview.totalCompletions })}
           tone="warning"
-          icon={<Flame size={14} />}
+          icon={<Flame size={15} />}
         />
       </div>
 

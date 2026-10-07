@@ -17,11 +17,11 @@ import { Button } from "@/components/ui/Button";
 import { Chips, Field, Select, Switch, TextInput } from "@/components/ui/Form";
 import { ConfirmDialog } from "@/components/ui/Modal";
 import { ErrorNote } from "@/components/ui/Feedback";
+import { InstallCard } from "@/components/pwa/Install";
 import { isAIConfigured } from "@/services/aiService";
 import { titleOptions } from "@/lib/stats";
 import { LanguageToggle, useI18n } from "@/i18n";
 import { formatNumber } from "@/lib/format";
-import { AppInstallCard } from "@/pwa/InstallUI";
 
 const CURRENCIES = ["₽", "$", "€", "£", "₸", "₴", "﷼"];
 
@@ -85,8 +85,6 @@ export default function SettingsPage() {
       ) : null}
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <AppInstallCard />
-
         <Card>
           <CardHeader title={t("char.profile")} subtitle={t("set.profileSub")} icon={<User size={15} />} />
           <div className="space-y-3 p-4">
@@ -263,6 +261,8 @@ VITE_AI_MODEL=gpt-4o-mini`}
             </Button>
           </div>
         </Card>
+
+        <InstallCard className="lg:col-span-2" />
 
         <Card>
           <CardHeader title={t("set.privacy")} subtitle={t("set.privacySub")} icon={<Shield size={15} />} />

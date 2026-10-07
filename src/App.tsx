@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { GameProvider, useGame } from "@/store/GameContext";
 import { UIProvider } from "@/store/UIContext";
 import { I18nProvider } from "@/i18n";
+import { initPWA } from "@/lib/pwa";
 import { AppShell } from "@/components/layout/AppShell";
 
 function ThemeSync() {
@@ -29,12 +30,18 @@ function ThemeSync() {
   return null;
 }
 
+function PWABoot() {
+  useEffect(() => initPWA(), []);
+  return null;
+}
+
 export default function App() {
   return (
     <I18nProvider>
       <GameProvider>
         <UIProvider>
           <ThemeSync />
+          <PWABoot />
           <AppShell />
         </UIProvider>
       </GameProvider>

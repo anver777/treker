@@ -4,48 +4,72 @@ import { useUI } from "@/store/UIContext";
 import { cn } from "@/utils/cn";
 import { tr } from "@/i18n";
 
+/* ============================================================
+   Mobile bottom navigation
+   ------------------------------------------------------------
+   Layout rules:
+   - `inset-x-0 bottom-0` + `box-sizing: border-box` so it never
+     creates page-level horizontal scroll.
+   - The raised "+" button is translated *inside* the nav's own
+     padding box, so it cannot push past the screen edges.
+   - Height is exposed as --bottom-nav-h and consumed by the page
+     padding, so content is never hidden underneath.
+   ============================================================ */
+
 export function BottomNav() {
   const { route, navigate, openComposer } = useUI();
 
   return (
     <>
       <nav
-        className="app-bottom-nav z-40 border-t border-line bg-surface/95 backdrop-blur-xl md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 box-border border-t border-line bg-surface/95 pb-[calc(10px+env(safe-area-inset-bottom,0px))] backdrop-blur-xl md:hidden"
+        style={{ height: "calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px))" }}
         aria-label={tr("nav.dashboard")}
       >
-        <ul className="mx-auto flex w-full max-w-lg items-center justify-between gap-0.5 px-1.5 pt-1.5 min-[380px]:gap-1 min-[380px]:px-2">
+        <ul className="flex h-full w-full items-stretch justify-around gap-0.5 px-1">
           {MOBILE_NAV.slice(0, 2).map((item) => (
-            <NavButton key={item.key} item={item} active={route === item.key} onClick={() => navigate(item.key)} />
+            <NavButton
+              key={item.key}
+              item={item}
+              active={route === item.key}
+              onClick={() => navigate(item.key)}
+            />
           ))}
-          <li className="flex shrink-0 items-center justify-center self-center px-0.5">
-            {/* 44px touch target, smaller 38px visual button inside */}
+
+          {/* Quick add — sits INSIDE the bar so it can never cover page content */}
+          <li className="flex shrink-0 items-center justify-center">
             <button
-              type="button"
               onClick={() => openComposer("quest")}
               aria-label={tr("nav.quickAdd")}
-              className="group flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl"
+              className="quick-add"
             >
-              <span className="relative flex h-[38px] w-[38px] items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-accent to-accent-2 text-[#04150e] shadow-[0_4px_12px_-3px_rgba(47,230,164,0.45)] ring-1 ring-white/15 transition duration-150 group-hover:brightness-110 group-active:scale-90">
-                <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/15" />
-                <Plus size={19} strokeWidth={2.6} className="relative" />
-              </span>
+              <Plus size={19} strokeWidth={2.6} />
             </button>
           </li>
+
           {MOBILE_NAV.slice(2).map((item) => (
-            <NavButton key={item.key} item={item} active={route === item.key} onClick={() => navigate(item.key)} />
+            <NavButton
+              key={item.key}
+              item={item}
+              active={route === item.key}
+              onClick={() => navigate(item.key)}
+            />
           ))}
         </ul>
       </nav>
 
-      {/* Floating AI button — available on every page */}
+      {/* Floating AI Coach — sits above the bar, never over content */}
       <button
-        type="button"
         onClick={() => navigate("coach")}
         aria-label={tr("nav.coach")}
-        className="app-fab-ai z-40 flex h-11 min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-full border border-violet/40 bg-surface/92 px-3 text-xs font-semibold text-violet shadow-[0_8px_28px_-10px_rgba(167,139,250,0.5)] backdrop-blur transition active:scale-95"
+        className="fixed right-3 z-40 flex h-11 w-11 items-center justify-center gap-1.5 rounded-full border border-violet/40 bg-surface/95 px-0 text-xs font-semibold text-violet shadow-[0_8px_28px_-10px_rgba(167,139,250,0.5)] backdrop-blur transition active:scale-95 sm:w-auto sm:px-3.5 md:bottom-6 md:right-6"
+        style={{
+          bottom: "calc(env(safe-area-inset-bottom, 0px) + var(--bottom-nav-h) + var(--fab-gap))",
+          height: "var(--fab-h)",
+        }}
       >
-        <Sparkles size={15} className="anim-sparkle shrink-0" />
-        <span className="hidden sm:inline">{tr("nav.coach")}</span>
+        <Sparkles size={16} className="anim-sparkle shrink-0" />
+        <span className="hidden truncate sm:inline">{tr("nav.coach")}</span>
       </button>
     </>
   );
@@ -64,11 +88,10 @@ function NavButton({
   return (
     <li className="min-w-0 flex-1">
       <button
-        type="button"
         onClick={onClick}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "flex min-h-[50px] w-full flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 transition",
+          "flex h-full min-h-[48px] w-full flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1.5 transition active:scale-95",
           active ? "text-accent" : "text-faint",
         )}
       >
@@ -78,11 +101,9 @@ function NavButton({
             active ? "bg-accent/14" : "",
           )}
         >
-          <IconCmp size={18} strokeWidth={active ? 2.1 : 1.8} />
+          <IconCmp size={19} strokeWidth={active ? 2.1 : 1.8} />
         </span>
-        <span className="max-w-full truncate text-[10px] font-medium leading-tight">
-          {item.shortLabel}
-        </span>
+        <span className="w-full truncate text-[9.5px] font-medium leading-none">{item.shortLabel}</span>
       </button>
     </li>
   );

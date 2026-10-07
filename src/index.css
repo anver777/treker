@@ -25,6 +25,19 @@
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.7);
 }
 
+/* ---------- Layout metrics (single source of truth) ----------
+   Defined outside :root so both the dark and light theme share them. */
+html {
+  /* Bottom navigation height incl. its inner padding */
+  --bottom-nav-h: 62px;
+  /* Floating AI button — sized and placed right above the bar */
+  --fab-h: 44px;
+  --fab-gap: 10px;
+  /* Clearance so the LAST card can always scroll clear of the bar + button */
+  --content-bottom: calc(var(--bottom-nav-h) + var(--fab-gap) + var(--fab-h) + 18px);
+  --header-h: 60px;
+}
+
 .theme-light {
   --background: #f4f6f9;
   --surface: #ffffff;
@@ -67,10 +80,7 @@
   --radius-card: 16px;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+* {
   min-width: 0;
 }
 
@@ -78,25 +88,34 @@ html,
 body {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
 }
 
 html {
+  /* Clip only horizontal page overflow; keep the viewport's vertical scroller native. */
+  overflow-x: clip;
+  overflow-y: visible;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
+  min-height: 100dvh;
   margin: 0;
+  overflow: visible;
   background: var(--background);
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-feature-settings: "cv02", "cv03", "cv04", "tnum";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overscroll-behavior-y: none;
+  /* Leave the native document scroll chain available to touch browsers. */
+  overscroll-behavior-y: auto;
+  touch-action: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
+  width: 100%;
+  max-width: 100%;
   min-height: 100dvh;
   isolation: isolate;
 }
@@ -138,36 +157,88 @@ button {
   color: inherit;
 }
 
-/* Native-app feel on phones (especially when installed to the home screen) */
-html {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button,
-a,
-[role="button"] {
-  touch-action: manipulation;
-}
-
-/* iOS zooms into inputs smaller than 16px — keep them at 16px on phones */
-@media (max-width: 640px) {
-  input,
-  select,
-  textarea {
-    font-size: 16px !important;
-  }
-}
-
-@media (display-mode: standalone) {
-  body {
-    overscroll-behavior: none;
-  }
-}
-
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* ============================================================
+   Global layout guards — NOTHING OUTSIDE ITS CONTAINER
+   ============================================================ */
+
+html,
+body {
+  box-sizing: border-box;
+}
+
+/* Any grid/flex child may shrink below its content size */
+#root * {
+  min-width: 0;
+}
+
+/* Numbers and long words wrap instead of clipping or overflowing */
+#root .num,
+#root [class*="tabular"] {
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================
+   Quick add button (centre of the mobile bottom bar)
+   Sized to sit fully inside the bar — it never covers content.
+   ============================================================ */
+
+/* Hit area is 46px (accessibility), the visible disc is 42px. */
+.quick-add {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  color: #04150e;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Decorative disc + bezel — drawn outside the button box. */
+.quick-add::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 999px;
+  background: linear-gradient(148deg, #5cf0bf 0%, var(--accent) 46%, var(--accent-secondary) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -2px 5px rgba(4, 21, 14, 0.22),
+    0 0 0 3px color-mix(in srgb, var(--surface) 94%, transparent),
+    0 4px 14px -6px var(--glow);
+  transition:
+    box-shadow 220ms ease,
+    filter 220ms ease;
+}
+
+.quick-add > * {
+  position: relative;
+  z-index: 1;
+}
+
+.quick-add:hover::before {
+  filter: brightness(1.07) saturate(1.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.52),
+    inset 0 -2px 5px rgba(4, 21, 14, 0.22),
+    0 0 0 3px color-mix(in srgb, var(--surface) 94%, transparent),
+    0 6px 20px -6px var(--glow);
+}
+
+.quick-add:active {
+  transform: scale(0.92);
+}
+
+.quick-add:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* ---------- Utilities ---------- */
@@ -179,10 +250,6 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @utility card-surface {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
   background: linear-gradient(
     160deg,
     color-mix(in srgb, var(--surface-elevated) 55%, var(--surface)) 0%,
@@ -191,124 +258,6 @@ input[type="number"]::-webkit-inner-spin-button {
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
-}
-
-/* ============================================================
-   Responsive layout & safe-area containers
-   Explicit CSS rules guarantee safe-area and bottom-nav clearance
-   across iOS Safari, Android Chrome, and all viewport widths.
-   ============================================================ */
-
-.app-header {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding-top: env(safe-area-inset-top, 0px);
-}
-
-.app-main {
-  width: 100%;
-  max-width: 1600px;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-  padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
-}
-
-@media (min-width: 768px) {
-  .app-main {
-    padding-bottom: 48px;
-  }
-}
-
-.app-bottom-nav {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-}
-
-.app-fab-ai {
-  position: fixed;
-  right: 12px;
-  bottom: calc(84px + env(safe-area-inset-bottom, 0px));
-}
-
-@media (min-width: 768px) {
-  .app-fab-ai {
-    right: 24px;
-    bottom: 24px;
-  }
-}
-
-.fx-toast-top {
-  top: calc(12px + env(safe-area-inset-top, 0px));
-}
-
-.fx-toast-bottom {
-  bottom: calc(90px + env(safe-area-inset-bottom, 0px));
-}
-
-@media (min-width: 640px) {
-  .fx-toast-top {
-    top: calc(18px + env(safe-area-inset-top, 0px));
-  }
-  .fx-toast-bottom {
-    bottom: 24px;
-  }
-}
-
-/* ============================================================
-   Responsive Stat Grids (4-card and 5-card summary rows)
-   - < 350px (e.g. 320px): 1 column
-   - 350px–1023px: 2 equal columns; if 5 cards, the 5th spans full width
-   - >= 1024px: 4 or 5 equal columns
-   ============================================================ */
-
-.stats-grid-4,
-.stats-grid-5 {
-  display: grid;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
-}
-
-@media (min-width: 350px) {
-  .stats-grid-4,
-  .stats-grid-5 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .stats-grid-5 > :last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (min-width: 640px) {
-  .stats-grid-4,
-  .stats-grid-5 {
-    gap: 16px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .stats-grid-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .stats-grid-5 {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-
-  .stats-grid-5 > :last-child:nth-child(odd) {
-    grid-column: auto;
-  }
 }
 
 @utility text-gradient {
@@ -351,6 +300,32 @@ input[type="number"]::-webkit-inner-spin-button {
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* Fluid stat typography — big numbers always fit their card */
+@utility stat-value {
+  font-size: clamp(1.35rem, 4.6vw, 1.65rem);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Multi-line card label without breaking words mid-letter */
+@utility stat-label {
+  font-size: 10px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+@utility safe-bottom-nav {
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ---------- Animations ---------- */

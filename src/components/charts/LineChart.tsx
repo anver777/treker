@@ -126,7 +126,7 @@ export function LineChart({
             ) : null}
             {i % labelEvery === 0 ? (
               <text
-                x={p.x}
+                x={Math.min(Math.max(p.x, PAD.left), w - PAD.right)}
                 y={h - 6}
                 textAnchor={i === 0 ? "start" : i === points.length - 1 ? "end" : "middle"}
                 fontSize="9.5"

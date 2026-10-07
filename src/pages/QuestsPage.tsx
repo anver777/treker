@@ -49,8 +49,8 @@ export default function QuestsPage() {
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      <div className="stats-grid-4">
-        <StatTile label={t("quests.activeQuests")} value={stats.active} icon={<ListChecks size={14} />} />
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4 lg:gap-4">
+        <StatTile label={t("quests.activeQuests")} value={stats.active} icon={<ListChecks size={15} />} />
         <StatTile label={t("common.completed")} value={stats.completed} hint={`${stats.total} ${t("common.total").toLowerCase()}`} />
         <StatTile
           label={t("quests.completionRate")}
@@ -101,7 +101,7 @@ export default function QuestsPage() {
             description={t("quests.noQuestsSub")}
             action={
               <Button size="sm" variant="primary" onClick={() => openComposer("quest")}>
-                <Plus size={15} /> {t("form.createQuest")}
+                <Plus size={15} /> Create Quest
               </Button>
             }
           />

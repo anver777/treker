@@ -13,20 +13,19 @@ export function NotificationCenter() {
   const unread = data.notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="relative shrink-0">
+    <div className="relative">
       <button
-        type="button"
         onClick={() => {
           setOpen((v) => !v);
           if (!open) window.setTimeout(readNotifications, 1400);
         }}
         aria-label={unread > 0 ? tr("fx.unread", { n: unread }) : tr("fx.notifications")}
         aria-expanded={open}
-        className="relative flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl border border-line bg-surface-2/60 text-muted transition hover:text-ink"
+        className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-line bg-surface-2/60 text-muted transition hover:text-ink active:scale-95"
       >
-        <Bell size={17} className="shrink-0" />
+        <Bell size={18} />
         {unread > 0 ? (
-          <span className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold leading-none text-[#04150e] shadow-sm">
+          <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold leading-none text-[#04150e]">
             {unread > 9 ? "9+" : unread}
           </span>
         ) : null}
@@ -41,13 +40,13 @@ export function NotificationCenter() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.18 }}
-              className="absolute right-0 top-[52px] z-[61] w-[min(90vw,340px)] max-w-[calc(100vw-24px)] overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl"
+              className="absolute right-0 top-[52px] z-[61] w-[min(88vw,340px)] overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl"
               role="dialog"
               aria-label={tr("fx.notifications")}
             >
               <div className="flex items-center justify-between gap-2 border-b border-line px-3 py-2.5">
-                <p className="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
-                  {tr("fx.notifications")}
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+                  Notifications
                 </p>
                 <div className="flex items-center gap-1">
                   {data.notifications.length > 0 ? (

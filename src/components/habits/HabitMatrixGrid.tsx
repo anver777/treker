@@ -51,11 +51,13 @@ export function HabitMatrixGrid({
   todayISOValue: string;
 }) {
   return (
-    <div className="mx-scroll relative w-full overflow-x-auto overscroll-x-contain">
+    <div className="mx-scroll relative w-full max-w-full overflow-x-auto overscroll-x-contain">
       <div className="min-w-max">
         {/* header */}
         <div className="flex items-end">
-          <div className={`sticky left-0 z-20 shrink-0 bg-surface pr-2 ${STICKY_CLASS}`}>
+          <div
+            className={`sticky left-0 z-20 shrink-0 border-r border-line bg-surface pr-2 ${STICKY_CLASS}`}
+          >
             <p className="truncate pb-2 pl-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-faint">
               {tr("nav.habits")}
             </p>
@@ -131,7 +133,7 @@ function HabitMatrixRow({
     <div className="flex items-stretch">
       {/* sticky identity column */}
       <div
-        className={`sticky left-0 z-10 shrink-0 border-r border-line bg-surface py-2 pr-2 ${STICKY_CLASS}`}
+        className={`sticky left-0 z-10 shrink-0 border-r border-line bg-surface py-2 pr-2 shadow-[6px_0_12px_-8px_rgba(0,0,0,0.7)] ${STICKY_CLASS}`}
       >
         <button
           onClick={() => onOpenDetails(habit.id)}

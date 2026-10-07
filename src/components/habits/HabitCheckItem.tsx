@@ -18,12 +18,11 @@ export function HabitCheckItem({
   return (
     <li className="min-w-0">
       <button
-        type="button"
         onClick={onToggle}
         aria-pressed={done}
         aria-label={`${done ? tr("quests.reopen") : tr("quests.complete")} · ${habit.name}`}
         className={cn(
-          "flex min-h-[52px] w-full max-w-full min-w-0 items-center gap-3 rounded-xl border p-2.5 text-left transition-all duration-200 active:scale-[0.99]",
+          "flex w-full min-w-0 items-center gap-3 rounded-xl border p-2.5 text-left transition-all duration-200 active:scale-[0.99]",
           done ? "border-accent/30 bg-accent/8" : "border-line bg-surface-2/40 hover:border-line-strong",
         )}
       >
@@ -39,16 +38,14 @@ export function HabitCheckItem({
         <span className="min-w-0 flex-1">
           <span
             className={cn(
-              "block text-[13px] font-semibold leading-snug text-ink [overflow-wrap:break-word]",
+              "block truncate text-[13px] font-semibold text-ink",
               done && "text-muted line-through decoration-line-strong",
             )}
           >
             {habit.name}
           </span>
-          <span className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[10px] text-faint">
-            <span className="shrink-0 font-semibold tabular" style={{ color: stat.color }}>
-              +{habit.xp} XP
-            </span>
+          <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-faint">
+            <span style={{ color: stat.color }}>+{habit.xp} XP</span>
             <span>·</span>
             <span className="truncate">{stat.short}</span>
           </span>

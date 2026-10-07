@@ -49,7 +49,7 @@ export function CharacterCard({
           <div className="mt-4">
             <div className="mb-1.5 flex items-baseline justify-between gap-2 text-xs">
               <span className="shrink-0 font-medium text-muted">XP</span>
-              <span className="min-w-0 truncate tabular text-ink">
+              <span className="num min-w-0 flex-wrap items-baseline justify-end gap-x-0.5 break-words text-ink sm:flex">
                 <span className="font-semibold">{formatNumber(info.xpIntoLevel)}</span>
                 <span className="text-faint"> / {formatNumber(info.xpForNext)}</span>
               </span>
@@ -108,16 +108,14 @@ function Metric({
       disabled={!action}
       className="flex min-w-0 flex-col items-start gap-0.5 border-line px-4 py-3 text-left transition hover:bg-surface-2/70 disabled:cursor-default sm:px-4"
     >
-      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-faint">
-        {label}
-      </span>
+      <span className="stat-label text-faint">{label}</span>
       <span
         className={cn(
-          "flex min-w-0 items-baseline gap-1 text-sm font-semibold text-ink",
+          "flex min-w-0 flex-wrap items-baseline gap-x-1 text-sm font-semibold text-ink",
           truncate ? "w-full" : "",
         )}
       >
-        <span className={truncate ? "truncate" : "tabular"}>{value}</span>
+        <span className={cn("num leading-tight", truncate ? "break-words" : "tabular")}>{value}</span>
         {suffix ? <span className="shrink-0 text-[10px] font-normal text-faint">{suffix}</span> : null}
       </span>
     </button>
@@ -147,8 +145,8 @@ export function LifeScoreCard({ score, parts }: { score: number; parts: { label:
       </div>
       <ul className="mt-4 space-y-2">
         {parts.slice(0, 5).map((p) => (
-          <li key={p.label} className="flex items-center gap-2">
-            <span className="w-[74px] shrink-0 truncate text-[11px] text-faint">{p.label}</span>
+          <li key={p.label} className="flex min-w-0 items-center gap-2">
+            <span className="min-w-0 flex-[0_1_74px] truncate text-[11px] text-faint">{p.label}</span>
             <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-line">
               <span
                 className="block h-full rounded-full bg-accent/70"

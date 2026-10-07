@@ -356,7 +356,7 @@ function MiniCard({
       <p className="line-clamp-2 text-[9px] font-semibold uppercase leading-tight tracking-[0.08em] text-faint">
         {label}
       </p>
-      <p className={cn("mt-1 truncate text-[14px] font-semibold tabular", color)}>{value}</p>
+      <p className={cn("num mt-1 break-words text-[14px] font-semibold leading-tight", color)}>{value}</p>
     </div>
   );
 }

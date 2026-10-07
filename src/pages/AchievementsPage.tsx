@@ -39,12 +39,12 @@ export default function AchievementsPage() {
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      <div className="stats-grid-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4 lg:gap-4">
         <StatTile
           label={t("ach.unlocked")}
           value={`${unlocked.length}/${ACHIEVEMENTS.length}`}
           hint={formatPercent((unlocked.length / ACHIEVEMENTS.length) * 100, 0)}
-          icon={<Trophy size={14} />}
+          icon={<Trophy size={15} />}
           tone="warning"
         />
         <StatTile label={t("common.locked")} value={locked.length} hint={t("ach.keepPlaying")} />

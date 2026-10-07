@@ -23,27 +23,54 @@ npm run preview  # preview the production build
 
 Works on Windows, macOS and Linux with Node 18+.
 
+## Install on your phone (PWA)
+
+LIFE RPG is a full Progressive Web App and installs like a native app.
+
+**Android (Chrome / Edge / Samsung Internet)**
+open the site → a prompt appears after a few seconds → **Установить**.
+Or: browser menu → *Install app* / *Add to Home screen*.
+
+**iPhone / iPad (Safari)**
+open the site in **Safari** → **Поделиться** → **На экран «Домой»** → **Добавить**.
+(LIFE RPG shows these steps automatically in *Настройки → Установка*.)
+
+After install it launches from the home screen in full-screen mode (no browser bar),
+uses the LIFE RPG icon, keeps your safe-area insets, and works **offline** — all data
+lives in local storage and the app shell is cached by a service worker.
+
+Long-pressing the icon offers **quick shortcuts**: Матрица привычек, Квесты, AI-тренер.
+
+### What makes it installable
+
+| Piece | File |
+| --- | --- |
+| Web app manifest | `public/manifest.webmanifest` |
+| Service worker (offline shell) | `public/sw.js` |
+| Vector mark | `public/icons/mark.svg`, `mark-mono.svg` |
+| App icons 96/150/180/192/512 | `public/icons/*.png` |
+| Maskable icons 192/512 | `public/icons/icon-maskable-*.png` |
+
+Icons are rasterised from the hand-drawn SVG mark, so they stay crisp at every size.
+
+**Requirement:** the site must be served over **HTTPS** (Vercel, Netlify and GitHub Pages
+all do this out of the box). `localhost` also counts as secure for local testing.
+
+```bash
+npm run build
+npm run preview   # http://localhost:4173 — PWA works here for local testing
+```
+
+> If a host serves only `index.html`, the app still runs and can still register a
+> fallback manifest, but offline caching needs the `sw.js` file to be served too.
+> Deploy the whole `dist/` folder (the default on Vercel) to get full offline support.
+
 ## Deploy
 
 The build output is a static `dist/` folder — deploy it anywhere:
 
 - **Vercel / Netlify**: import the repo, framework preset **Vite**, build `npm run build`, output `dist`.
 - **GitHub Pages**: publish `dist/`.
-
-## Install on a phone (PWA)
-
-LIFE RPG is a Progressive Web App: after deploying (Vercel / any HTTPS host) it can be installed
-like a native app — home-screen icon, full-screen launch, works offline.
-
-- **Android (Chrome):** tap **Install** in the in-app banner, or browser menu ⋮ → *Install app*.
-- **iPhone / iPad (Safari):** Share → *Add to Home Screen* → *Add*.
-- **Desktop (Chrome / Edge):** install icon in the address bar.
-
-Files: `public/manifest.webmanifest`, `public/sw.js` (network-first app shell, offline fallback,
-never touches user data), `public/icons/*`. Installation requires **HTTPS** (localhost also works).
-
-> On iOS the installed app has its own storage, separate from Safari. Move progress with
-> Settings → Data → Export / Import.
 
 ## Features
 

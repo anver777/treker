@@ -114,18 +114,16 @@ export default function AICoachPage() {
 
   return (
     <div className="space-y-4">
-      <div className="stats-grid-4">
+      <div className="grid gap-3 sm:grid-cols-4">
         {[
           { label: t("common.level"), value: formatNumber(snapshot.level) },
           { label: t("char.totalXp"), value: formatNumber(snapshot.xp) },
           { label: t("dash.lifeScore"), value: `${snapshot.lifeScore}/100` },
           { label: t("ai.habitRate"), value: formatPercent(snapshot.habits.rate, 0) },
         ].map((s) => (
-          <div key={s.label} className="card-surface flex min-w-0 flex-col justify-between p-3.5">
-            <p className="text-[10px] font-semibold uppercase leading-[1.25] tracking-[0.06em] text-faint [overflow-wrap:break-word]">
-              {s.label}
-            </p>
-            <p className="mt-1.5 text-xl font-bold tabular text-ink [overflow-wrap:anywhere]">{s.value}</p>
+          <div key={s.label} className="card-surface min-w-0 p-3">
+            <p className="stat-label text-faint">{s.label}</p>
+            <p className="num mt-1 break-words text-base font-semibold leading-tight text-ink sm:text-lg">{s.value}</p>
           </div>
         ))}
       </div>

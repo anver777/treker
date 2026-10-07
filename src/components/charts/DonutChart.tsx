@@ -77,7 +77,7 @@ export function DonutChart({
           <span className="max-w-full truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-faint">
             {focused ? focused.label : centerLabel}
           </span>
-          <span className="max-w-full truncate text-xl font-semibold tabular text-ink">
+          <span className="num max-w-full break-words text-lg font-semibold leading-tight text-ink sm:text-xl">
             {focused
               ? unit
                 ? `${compactNumber(focused.value)} ${unit}`

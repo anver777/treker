@@ -30,12 +30,9 @@ export default function HabitsPage() {
   const ranked = useMemo(() => topHabits(data.habits, 10, today), [data.habits, today]);
   const active = data.habits.filter((h) => !h.archived);
 
-  const todayPct =
-    overview.todayTotal > 0 ? Math.round((overview.todayDone / overview.todayTotal) * 100) : 0;
-
   return (
     <div className="space-y-4 sm:space-y-5">
-      <div className="stats-grid-5">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5 lg:gap-4">
         <StatTile
           label={t("habits.completionRate")}
           value={formatPercent(overview.rate)}
@@ -43,26 +40,17 @@ export default function HabitsPage() {
             done: formatNumber(overview.totalCompletions),
             planned: formatNumber(overview.planned),
           })}
-          icon={<TrendingUp size={14} />}
+          icon={<TrendingUp size={15} />}
         />
         <StatTile
           label={t("habits.totalCompletions")}
           value={formatNumber(overview.totalCompletions)}
           hint={t("habits.habitsCount", { n: overview.habitCount })}
         />
+        <StatTile label={t("habits.currentStreak")} value={`${overview.currentStreak} ${t("common.days")}`} icon={<Flame size={15} />} tone="warning" />
+        <StatTile label={t("habits.bestStreak")} value={`${overview.bestStreak} ${t("common.days")}`} tone="warning" hint={t("quests.allTime")} />
         <StatTile
-          label={t("habits.currentStreak")}
-          value={`${overview.currentStreak} ${t("common.days")}`}
-          icon={<Flame size={14} />}
-          tone="warning"
-        />
-        <StatTile
-          label={t("habits.bestStreak")}
-          value={`${overview.bestStreak} ${t("common.days")}`}
-          tone="warning"
-          hint={t("quests.allTime")}
-        />
-        <StatTile
+          full
           label={t("habits.consistency")}
           value={overview.consistency.label}
           hint={t("habits.consistencySub", { n: formatPercent(overview.rate, 0) })}
@@ -76,31 +64,16 @@ export default function HabitsPage() {
           subtitle={t("habits.todaySub", { done: overview.todayDone, total: overview.todayTotal })}
           icon={<Repeat size={15} />}
           action={
-            <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <Button size="sm" variant="secondary" onClick={() => navigate("matrix")}>
-                <Grid3x3 size={14} className="shrink-0" />
-                <span>{t("mx.viewFullMatrix")}</span>
+            <div className="flex shrink-0 gap-2">
+              <Button size="sm" variant="ghost" onClick={() => navigate("matrix")}>
+                <Grid3x3 size={15} /> {t("mx.viewFullMatrix")}
               </Button>
               <Button size="sm" variant="primary" onClick={() => openComposer("habit")}>
-                <Plus size={14} className="shrink-0" />
-                <span>{t("dash.newHabit")}</span>
+                <Plus size={15} /> {t("dash.newHabit")}
               </Button>
             </div>
           }
         />
-        {active.length > 0 ? (
-          <div className="flex items-center gap-3 border-b border-line bg-surface-2/30 px-3.5 py-2.5 sm:px-5">
-            <div className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-line">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-accent to-accent-2 transition-all duration-500"
-                style={{ width: `${todayPct}%` }}
-              />
-            </div>
-            <span className="shrink-0 text-xs font-semibold tabular text-accent">
-              {overview.todayDone}/{overview.todayTotal} · {todayPct}%
-            </span>
-          </div>
-        ) : null}
         {active.length === 0 ? (
           <EmptyState
             icon={<Repeat size={22} />}
@@ -108,12 +81,12 @@ export default function HabitsPage() {
             description={t("habits.noHabitsSub")}
             action={
               <Button size="sm" variant="primary" onClick={() => openComposer("habit")}>
-                <Plus size={15} /> {t("form.createHabit")}
+                <Plus size={15} /> Create Habit
               </Button>
             }
           />
         ) : (
-          <ul className="grid grid-cols-1 gap-2 p-3 sm:grid-cols-2 sm:p-4 xl:grid-cols-3">
+          <ul className="grid gap-2 p-3 sm:grid-cols-2 xl:grid-cols-3">
             {active.map((h) => (
               <HabitCheckItem
                 key={h.id}
@@ -142,14 +115,13 @@ export default function HabitsPage() {
               const anchor = anchorByHabit[h.id] || `${monthKey(today)}-01`;
               return (
                 <li key={h.id} className="min-w-0">
-                  <div className="flex min-w-0 items-center gap-2 p-3 sm:gap-3 sm:px-4">
+                  <div className="flex items-center gap-3 p-3 sm:px-4">
                     <button
-                      type="button"
                       onClick={() => toggleHabit(h.id)}
                       aria-pressed={h.completions.includes(today)}
                       aria-label={h.name}
                       className={cn(
-                        "flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl border text-lg transition active:scale-90",
+                        "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border text-lg transition active:scale-90",
                         h.completions.includes(today)
                           ? "border-transparent"
                           : "border-line hover:border-line-strong",
@@ -164,24 +136,26 @@ export default function HabitsPage() {
                     </button>
 
                     <button
-                      type="button"
                       onClick={() => setExpanded(open ? null : h.id)}
                       aria-expanded={open}
-                      className="flex min-w-0 flex-1 items-center gap-2 text-left sm:gap-3"
+                      className="flex min-w-0 flex-1 items-center gap-3 text-left"
                     >
                       <div className="min-w-0 flex-1">
                         <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-                          <p className="min-w-0 text-sm font-semibold leading-snug text-ink [overflow-wrap:break-word]">
-                            {h.name}
-                          </p>
+                          <p className="min-w-0 truncate text-sm font-semibold text-ink">{h.name}</p>
                           <StreakFlare streak={s.currentStreak} />
                         </div>
-                        <p className="mt-0.5 text-[11px] leading-snug text-faint [overflow-wrap:break-word]">
-                          {STATS[h.stat].short} · +{h.xp} XP · {formatNumber(s.totalCompletions)}{" "}
-                          {t("habits.totalShort")}
+                        <p className="mt-0.5 flex flex-wrap items-center gap-x-1 text-[10.5px] leading-tight text-faint">
+                          <span className="shrink-0">{STATS[h.stat].short}</span>
+                          <span className="shrink-0">·</span>
+                          <span className="shrink-0 tabular">+{h.xp} XP</span>
+                          <span className="shrink-0">·</span>
+                          <span className="num shrink-0">
+                            {formatNumber(s.totalCompletions)} {t("habits.totalShort")}
+                          </span>
                         </p>
                       </div>
-                      <HabitRing rate={s.last30.rate} color={h.color} size={38} />
+                      <HabitRing rate={s.last30.rate} color={h.color} size={40} />
                       <ChevronDown
                         size={16}
                         className={cn("shrink-0 text-faint transition-transform", open && "rotate-180")}
@@ -189,12 +163,11 @@ export default function HabitsPage() {
                     </button>
 
                     <button
-                      type="button"
                       onClick={() => deleteHabit(h.id)}
                       aria-label={`${t("common.delete")}: ${h.name}`}
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-faint transition hover:bg-danger/10 hover:text-danger"
+                      className="h-9 w-9 shrink-0 rounded-lg text-faint transition hover:bg-danger/10 hover:text-danger"
                     >
-                      <Trash2 size={15} />
+                      <Trash2 size={15} className="mx-auto" />
                     </button>
                   </div>
 
@@ -238,7 +211,7 @@ export default function HabitsPage() {
                   {i + 1}
                 </span>
                 <span className="text-base">{r.habit.icon}</span>
-                <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-ink">
+                <span className="min-w-0 flex-1 break-words text-[12.5px] font-medium leading-tight text-ink">
                   {r.habit.name}
                 </span>
                 <span className="h-1.5 w-16 shrink-0 overflow-hidden rounded-full bg-line sm:w-28">
@@ -262,12 +235,8 @@ export default function HabitsPage() {
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0 rounded-xl border border-line bg-surface/60 p-2.5">
-      <p className="text-[9px] font-semibold uppercase leading-[1.25] tracking-[0.06em] text-faint [overflow-wrap:break-word]">
-        {label}
-      </p>
-      <p className="mt-1 text-[13px] font-semibold leading-tight tabular text-ink [overflow-wrap:anywhere]">
-        {value}
-      </p>
+      <p className="stat-label text-faint">{label}</p>
+      <p className="num mt-1 break-words text-[13px] font-semibold leading-tight text-ink">{value}</p>
     </div>
   );
 }

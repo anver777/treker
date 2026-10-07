@@ -42,7 +42,7 @@ export function StatCard({ stat, className }: { stat: StatView; className?: stri
       <ProgressBar value={stat.progress} color={stat.meta.color} height={6} label={`${stat.meta.label} progress`} />
 
       <div className="flex items-baseline justify-between gap-2 text-[11px]">
-        <span className="truncate tabular text-muted">
+        <span className="num break-words text-[10.5px] leading-tight text-muted">
           {formatNumber(stat.xpIntoLevel)} / {formatNumber(stat.xpForNext)} XP
         </span>
         <span className="shrink-0 tabular font-semibold" style={{ color: stat.meta.color }}>

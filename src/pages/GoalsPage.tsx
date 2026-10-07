@@ -22,8 +22,8 @@ export default function GoalsPage() {
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      <div className="stats-grid-4">
-        <StatTile label={t("nav.goals")} value={stats.total} hint={`${stats.completed} ${t("common.completed").toLowerCase()}`} icon={<Target size={14} />} />
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4 lg:gap-4">
+        <StatTile label={t("nav.goals")} value={stats.total} hint={`${stats.completed} ${t("common.completed").toLowerCase()}`} icon={<Target size={15} />} />
         <StatTile label={t("goals.inProgress")} value={stats.total - stats.completed} />
         <StatTile label={t("goals.avgProgress")} value={formatPercent(stats.avgProgress, 0)} tone="violet" />
         <StatTile
@@ -31,7 +31,7 @@ export default function GoalsPage() {
           value={`${milestonesDone}/${milestonesTotal}`}
           hint={t("goals.milestonesSub")}
           tone="warning"
-          icon={<Trophy size={14} />}
+          icon={<Trophy size={15} />}
         />
       </div>
 
@@ -53,7 +53,7 @@ export default function GoalsPage() {
             description={t("goals.noGoalsSub")}
             action={
               <Button size="sm" variant="primary" onClick={() => openComposer("goal")}>
-                <Plus size={15} /> {t("form.createGoal")}
+                <Plus size={15} /> Create Goal
               </Button>
             }
           />

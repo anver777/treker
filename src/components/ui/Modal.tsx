@@ -67,24 +67,24 @@ export function Modal({
             exit={{ opacity: 0, y: 18, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "relative z-10 flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[20px] border border-line bg-surface shadow-2xl sm:rounded-[20px]",
+              "relative z-10 mx-auto flex max-h-[92dvh] w-full max-w-full flex-col overflow-hidden rounded-t-[20px] border border-line bg-surface shadow-2xl sm:rounded-[20px]",
               widths[size],
             )}
           >
-            <header className="flex shrink-0 items-start justify-between gap-3 border-b border-line px-4 py-4 sm:px-5">
-              <div className="min-w-0">
-                <h2 className="truncate text-base font-semibold tracking-tight text-ink">{title}</h2>
+            <header className="flex shrink-0 items-start justify-between gap-x-3 gap-y-2 px-3.5 py-4 sm:px-5">
+              <div className="min-w-0 flex-1">
+                <h2 className="break-words text-base font-semibold leading-tight tracking-tight text-ink">{title}</h2>
                 {description ? (
-                  <p className="mt-0.5 text-xs leading-relaxed text-faint">{description}</p>
+                  <p className="mt-1 break-words text-xs leading-relaxed text-faint">{description}</p>
                 ) : null}
               </div>
               <IconButton label={tr("common.close")} variant="ghost" size="sm" onClick={onClose}>
                 <X size={18} />
               </IconButton>
             </header>
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">{children}</div>
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3.5 py-4 sm:px-5">{children}</div>
             {footer ? (
-              <footer className="flex shrink-0 flex-wrap items-center justify-end gap-2 border-t border-line bg-surface-2/60 px-4 py-3 pb-safe sm:px-5">
+              <footer className="flex shrink-0 flex-wrap items-center justify-end gap-2 border-t border-line bg-surface-2/60 px-3.5 py-3 pb-safe sm:px-5">
                 {footer}
               </footer>
             ) : (

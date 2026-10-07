@@ -110,23 +110,22 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
   const { lang, setLang } = useI18n();
   return (
     <div
-      className="flex h-11 min-h-[44px] shrink-0 items-center gap-0.5 rounded-xl border border-line bg-surface-2/60 p-1"
+      className="flex shrink-0 items-center gap-0 overflow-hidden rounded-xl border border-line bg-surface-2/60 p-0.5"
       role="group"
       aria-label={tr("lang.label")}
     >
       {(["ru", "en"] as Lang[]).map((code) => (
         <button
           key={code}
-          type="button"
           onClick={() => setLang(code)}
           aria-pressed={lang === code}
           title={code === "ru" ? "Русский" : "English"}
           className={
             compact
-              ? `flex h-full min-w-[30px] items-center justify-center rounded-lg px-1.5 text-[11px] font-semibold uppercase transition ${
+              ? `h-11 min-w-[36px] shrink-0 rounded-lg px-2 text-[11px] font-semibold uppercase leading-none transition ${
                   lang === code ? "bg-accent text-[#04150e]" : "text-muted hover:text-ink"
                 }`
-              : `flex h-full min-w-[32px] sm:min-w-[38px] items-center justify-center rounded-lg px-2 sm:px-2.5 text-[11px] sm:text-xs font-semibold uppercase transition ${
+              : `h-11 min-w-[44px] shrink-0 rounded-lg px-2.5 text-[12px] font-semibold uppercase leading-none transition ${
                   lang === code ? "bg-accent text-[#04150e]" : "text-muted hover:text-ink"
                 }`
           }

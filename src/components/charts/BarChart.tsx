@@ -119,9 +119,9 @@ export function BarChart({
               ) : null}
               {i % labelEvery === 0 ? (
                 <text
-                  x={cx}
+                  x={Math.min(Math.max(cx, padLeft), w - 4)}
                   y={height - 6}
-                  textAnchor="middle"
+                  textAnchor={i === 0 ? "start" : i === data.length - 1 ? "end" : "middle"}
                   fontSize="9.5"
                   fill="var(--text-tertiary)"
                 >

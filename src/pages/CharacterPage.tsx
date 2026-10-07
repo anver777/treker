@@ -99,8 +99,8 @@ export default function CharacterPage() {
         </Card>
       </div>
 
-      <div className="stats-grid-4">
-        <StatTile label={t("char.totalXp")} value={formatNumber(data.profile.totalXp)} icon={<Zap size={14} />} />
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <StatTile label={t("char.totalXp")} value={formatNumber(data.profile.totalXp)} icon={<Zap size={15} />} />
         <StatTile
           label={t("char.achCount")}
           value={`${unlockedCount(data)}/${ACHIEVEMENTS.length}`}

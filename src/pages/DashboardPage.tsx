@@ -28,7 +28,6 @@ import { greeting, timeAgo, todayISO } from "@/lib/date";
 import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";
 import { useBootDelay } from "@/hooks/useMeasure";
 import { dateLocale, useI18n } from "@/i18n";
-import { InstallBanner } from "@/pwa/InstallUI";
 
 export default function DashboardPage() {
   const { data, toggleQuest, toggleHabit } = useGame();
@@ -85,11 +84,9 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      <InstallBanner />
-
       {/* Greeting */}
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="min-w-0">
+      <div className="flex flex-wrap items-end justify-between gap-x-3 gap-y-3">
+        <div className="min-w-0 flex-1 basis-[220px]">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">
             {new Date().toLocaleDateString(dateLocale(), { weekday: "long", month: "long", day: "numeric" })}
           </p>
@@ -120,31 +117,31 @@ export default function DashboardPage() {
       </div>
 
       {/* Today tiles */}
-      <div className="stats-grid-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4 lg:gap-4">
         <StatTile
           label={t("dash.xpToday")}
           value={formatNumber(memo.xpToday)}
           hint={t("dash.xpIn", { n: 14 })}
-          icon={<Zap size={14} />}
+          icon={<Zap size={15} />}
         />
         <StatTile
           label={t("dash.dailyScore")}
           value={`${memo.summary.score}`}
           hint="/ 100"
-          icon={<TrendingUp size={14} />}
+          icon={<TrendingUp size={15} />}
           tone="violet"
         />
         <StatTile
           label={t("dash.questsDone")}
           value={`${memo.quests.completed}/${memo.quests.total}`}
           hint={t("quests.activeCount", { n: memo.quests.active })}
-          icon={<ListChecks size={14} />}
+          icon={<ListChecks size={15} />}
         />
         <StatTile
           label={t("dash.habitStreak")}
           value={`${memo.habits.currentStreak} ${t("common.days")}`}
           hint={t("habits.bestShort", { n: memo.habits.bestStreak, pct: formatPercent(memo.habits.rate, 0) })}
-          icon={<Flame size={14} />}
+          icon={<Flame size={15} />}
           tone="warning"
         />
       </div>
@@ -254,7 +251,7 @@ export default function DashboardPage() {
               </Button>
             }
           />
-          <div className="flex flex-wrap items-center gap-3 border-b border-line px-3.5 py-3 sm:px-4">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line px-3.5 py-3 sm:px-4">
             <RadialProgress
               value={memo.habits.todayTotal > 0 ? (memo.habits.todayDone / memo.habits.todayTotal) * 100 : 0}
               size={58}
@@ -265,21 +262,24 @@ export default function DashboardPage() {
                 {memo.habits.todayDone}/{memo.habits.todayTotal}
               </span>
             </RadialProgress>
-            <div className="min-w-0 flex-1">
-              <p className="text-[11px] text-muted [overflow-wrap:break-word]">{t("mx.todayProgress")}</p>
-              <p className="text-xl font-semibold tabular text-ink">
+            <div className="min-w-0 flex-1 basis-[110px]">
+              <p className="truncate text-[11px] text-muted">{t("mx.todayProgress")}</p>
+              <p className="num text-xl font-semibold leading-none text-ink">
                 {memo.habits.todayTotal > 0
                   ? Math.round((memo.habits.todayDone / memo.habits.todayTotal) * 100)
                   : 0}
                 %
               </p>
             </div>
-            <div className="flex shrink-0 flex-wrap gap-1.5">
-              <Button size="sm" variant="secondary" onClick={() => navigate("matrix")}>
-                <Grid3x3 size={14} className="shrink-0" />
-                <span>{t("mx.title")}</span>
-              </Button>
-            </div>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="shrink-0"
+              onClick={() => navigate("matrix")}
+            >
+              <Grid3x3 size={14} />
+              <span className="truncate">{t("mx.title")}</span>
+            </Button>
           </div>
           {todaysHabits.length === 0 ? (
             <EmptyState
@@ -346,7 +346,7 @@ export default function DashboardPage() {
                       {a.detail} · {timeAgo(a.createdAt)}
                     </p>
                   </div>
-                  <span className="shrink-0 text-[12px] font-semibold tabular text-accent">
+                  <span className="num shrink-0 text-[12px] font-semibold text-accent">
                     +{formatNumber(a.xp)}
                   </span>
                 </li>
@@ -470,7 +470,9 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <li className="flex items-baseline justify-between gap-2 border-b border-line pb-1.5 last:border-0">
       <span className="shrink-0 text-[11px] text-faint">{label}</span>
-      <span className="min-w-0 truncate text-[13px] font-semibold tabular text-ink">{value}</span>
+      <span className="num min-w-0 break-words text-right text-[13px] font-semibold leading-tight text-ink">
+        {value}
+      </span>
     </li>
   );
 }

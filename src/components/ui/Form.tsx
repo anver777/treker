@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 const inputBase =
-  "w-full rounded-xl border border-line bg-surface-2 px-3 py-2.5 text-sm text-ink placeholder:text-faint outline-none transition focus:border-accent focus:bg-surface-3 disabled:opacity-50";
+  "w-full min-w-0 rounded-xl border border-line bg-surface-2 px-3 py-2.5 text-sm text-ink placeholder:text-faint outline-none transition focus:border-accent focus:bg-surface-3 disabled:opacity-50";
 
 export function Field({
   label,
@@ -21,15 +21,15 @@ export function Field({
 }) {
   return (
     <label className={cn("block min-w-0", className)}>
-      <span className="mb-1.5 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+      <span className="stat-label mb-1.5 flex items-start gap-1 text-muted">
         {label}
         {required ? <span className="text-accent">*</span> : null}
       </span>
       {children}
       {error ? (
-        <span className="mt-1 block text-xs text-danger">{error}</span>
+        <span className="mt-1 block break-words text-xs leading-snug text-danger">{error}</span>
       ) : hint ? (
-        <span className="mt-1 block text-xs text-faint">{hint}</span>
+        <span className="mt-1 block break-words text-xs leading-snug text-faint">{hint}</span>
       ) : null}
     </label>
   );

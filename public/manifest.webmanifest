@@ -1,42 +1,72 @@
 {
-  "id": "/",
+  "id": "./",
   "name": "LIFE RPG — Turn Your Life Into a Game",
   "short_name": "LIFE RPG",
-  "description": "Превратите свою жизнь в игру: квесты, привычки, XP, уровни, достижения и AI-тренер.",
+  "description": "Моя жизнь — это игра. Превращай действия в XP, привычки в серии, а цели в квесты.",
   "lang": "ru",
   "dir": "ltr",
-  "start_url": "/?source=pwa#/dashboard",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
-  "orientation": "any",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait-primary",
   "background_color": "#06080b",
   "theme_color": "#06080b",
-  "categories": ["productivity", "lifestyle", "health"],
+  "categories": ["productivity", "lifestyle", "games", "health"],
+  "prefer_related_applications": false,
   "icons": [
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
   ],
   "shortcuts": [
     {
       "name": "Матрица привычек",
-      "short_name": "Привычки",
-      "url": "/?source=shortcut#/matrix",
-      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+      "short_name": "Матрица",
+      "description": "Открыть Habit Matrix",
+      "url": "./#/matrix",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Квесты",
       "short_name": "Квесты",
-      "url": "/?source=shortcut#/quests",
-      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+      "description": "Открыть список квестов",
+      "url": "./#/quests",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "AI-тренер",
-      "short_name": "AI",
-      "url": "/?source=shortcut#/coach",
-      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+      "short_name": "Тренер",
+      "description": "Спросить AI-коуча",
+      "url": "./#/coach",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     }
   ]
 }

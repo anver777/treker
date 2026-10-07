@@ -49,8 +49,8 @@ export default function CalendarPage() {
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      <div className="stats-grid-4">
-        <StatTile label={t("cal.xp30")} value={formatNumber(monthXp)} icon={<Zap size={14} />} />
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4 lg:gap-4">
+        <StatTile label={t("cal.xp30")} value={formatNumber(monthXp)} icon={<Zap size={15} />} />
         <StatTile label={t("cal.avgDailyScore")} value={Math.round(monthStats.avg)} hint="/ 100" tone="violet" />
         <StatTile label={t("cal.perfectDays")} value={monthStats.perfect} hint={t("cal.perfectDaysHint")} tone="warning" />
         <StatTile label={t("cal.daysTracked")} value={monthStats.days} hint={t("cal.daysTrackedHint")} />
@@ -195,13 +195,13 @@ export default function CalendarPage() {
               />
               <div className="flex items-baseline justify-between gap-2 border-b border-line pb-2">
                 <span className="shrink-0 text-[11px] text-faint">{t("dash.moneyIn")}</span>
-                <span className="min-w-0 truncate text-[13px] font-semibold tabular text-accent">
+                <span className="num min-w-0 break-words text-right text-[12.5px] font-semibold leading-tight text-accent">
                   {formatCurrency(summary.moneyIn, data.profile.currency)}
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-2 border-b border-line pb-2">
                 <span className="shrink-0 text-[11px] text-faint">{t("dash.moneyOut")}</span>
-                <span className="min-w-0 truncate text-[13px] font-semibold tabular text-danger">
+                <span className="num min-w-0 break-words text-right text-[12.5px] font-semibold leading-tight text-danger">
                   {formatCurrency(summary.moneyOut, data.profile.currency)}
                 </span>
               </div>

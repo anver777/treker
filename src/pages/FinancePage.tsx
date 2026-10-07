@@ -41,18 +41,18 @@ export default function FinancePage() {
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      <div className="stats-grid-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatTile
           label={T("fin.income")}
           value={compactCurrency(summary.income, currency)}
           hint={scope === "month" ? monthLabel(today) : T("fin.allTime")}
-          icon={<ArrowUpRight size={14} />}
+          icon={<ArrowUpRight size={15} />}
         />
         <StatTile
           label={T("fin.expenses")}
           value={compactCurrency(summary.expense, currency)}
           hint={T("fin.transactionsCount", { n: summary.count })}
-          icon={<ArrowDownRight size={14} />}
+          icon={<ArrowDownRight size={15} />}
           tone="danger"
         />
         <StatTile
@@ -64,7 +64,7 @@ export default function FinancePage() {
           label={T("fin.totalBalance")}
           value={compactCurrency(balance, currency)}
           hint={T("fin.incomeMinusExpenses")}
-          icon={<Wallet size={14} />}
+          icon={<Wallet size={15} />}
           tone="violet"
         />
       </div>

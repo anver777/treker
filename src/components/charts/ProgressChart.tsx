@@ -40,6 +40,14 @@ export function ProgressChart({
   const innerH = Math.max(10, height - pad.top - pad.bottom);
   const slot = innerW / Math.max(1, data.length);
   const barW = Math.max(3, Math.min(20, slot * 0.6));
+  // Labels are anchored inside their own slot, so they can never cross the axis edge
+  const firstIsEdge = data.length > 0;
+  const labelAnchor = (i: number): "start" | "middle" | "end" => {
+    if (!firstIsEdge) return "middle";
+    if (i === 0) return "start";
+    if (i === data.length - 1) return "end";
+    return "middle";
+  };
 
   const activeItem = active !== null ? data[active] : null;
   const hasAny = data.some((d) => d.planned > 0);
@@ -54,11 +62,13 @@ export function ProgressChart({
       >
         {activeItem ? (
           <>
-            <span className="min-w-0 flex-1 truncate font-semibold text-ink">{activeItem.caption}</span>
-            <span className="shrink-0 tabular text-muted">
+            <span className="min-w-0 flex-1 truncate text-[11px] font-semibold text-ink">
+              {activeItem.caption}
+            </span>
+            <span className="num shrink-0 text-[11px] text-muted">
               {activeItem.done}/{activeItem.planned}
             </span>
-            <span className="shrink-0 font-semibold tabular text-accent">
+            <span className="num shrink-0 text-[11px] font-semibold text-accent">
               {formatPercent(activeItem.rate, 0)}
             </span>
           </>
@@ -133,9 +143,9 @@ export function ProgressChart({
               />
               {data.length <= 34 || i % Math.ceil(data.length / 16) === 0 ? (
                 <text
-                  x={cx}
+                  x={Math.min(Math.max(cx, pad.left), w - pad.right)}
                   y={height - 6}
-                  textAnchor="middle"
+                  textAnchor={labelAnchor(i)}
                   fontSize="8.5"
                   fill="var(--text-tertiary)"
                 >
@@ -178,15 +188,15 @@ export function ActivityHeatmap({ columns }: { columns: HeatCellData[][] }) {
       <div className="mb-2 flex min-h-[30px] items-center gap-2 rounded-lg border border-line bg-surface-2/40 px-2.5 py-1.5 text-[11px]">
         {hovered ? (
           <>
-            <span className="min-w-0 flex-1 truncate font-semibold text-ink">
+            <span className="min-w-0 flex-1 truncate text-[11px] font-semibold text-ink">
               {new Date(hovered.iso).toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
               })}
             </span>
-            <span className="shrink-0 tabular text-muted">{hovered.xp} XP</span>
-            <span className="shrink-0 tabular text-muted">
+            <span className="num shrink-0 text-[11px] text-muted">{hovered.xp} XP</span>
+            <span className="num shrink-0 text-[11px] text-muted">
               {hovered.done}/{hovered.planned}
             </span>
           </>

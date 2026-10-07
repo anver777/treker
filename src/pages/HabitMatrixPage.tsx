@@ -146,7 +146,7 @@ export default function HabitMatrixPage() {
       </div>
 
       {/* ---------- top stats ---------- */}
-      <div className="stats-grid-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4 lg:gap-4">
         <StatTile
           label={t("mx.monthlyProgress")}
           value={formatPercent(progress.rate)}
@@ -154,13 +154,13 @@ export default function HabitMatrixPage() {
             done: formatNumber(progress.done),
             planned: formatNumber(progress.planned),
           })}
-          icon={<Grid3x3 size={14} />}
+          icon={<Grid3x3 size={15} />}
         />
         <StatTile
           label={t("mx.currentStreak")}
           value={`${streaks.current} ${t("common.days")}`}
           hint={bonusPct > 0 ? t("mx.streakBonusActive", { n: bonusPct }) : t("mx.longestStreak")}
-          icon={<Flame size={14} />}
+          icon={<Flame size={15} />}
           tone="warning"
         />
         <StatTile
@@ -173,7 +173,7 @@ export default function HabitMatrixPage() {
                 ? t("mx.nextTier", { n: nextTier.days })
                 : "—"
           }
-          icon={<Trophy size={14} />}
+          icon={<Trophy size={15} />}
           tone="warning"
         />
         <StatTile
@@ -558,39 +558,33 @@ export default function HabitMatrixPage() {
               const up = m.delta > 0;
               const down = m.delta < 0;
               return (
-                <li key={m.key} className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2.5">
-                  <span className="min-w-0 flex-1 basis-[120px] text-[12px] leading-snug text-muted [overflow-wrap:break-word]">
+                <li key={m.key} className="flex min-w-0 items-center gap-2 px-3 py-2.5">
+                  <span className="min-w-0 flex-1 truncate text-[12px] text-muted">
                     {t(`cmp.${m.key}`)}
                   </span>
-                  <div className="flex shrink-0 items-center gap-2">
-                    <span className="flex shrink-0 items-baseline gap-1">
-                      <span className="text-[11px] tabular text-faint">
-                        {m.digits > 0 ? m.previous.toFixed(1) : formatNumber(m.previous)}
-                      </span>
-                      <span className="text-[10px] text-faint">→</span>
+                  <span className="flex shrink-0 items-baseline gap-1">
+                    <span className="num text-[11px] leading-tight text-faint">
+                      {m.digits > 0 ? m.previous.toFixed(1) : formatNumber(m.previous)}
                     </span>
-                    <span
-                      className={cn(
-                        "shrink-0 text-[13px] font-semibold tabular",
-                        up ? "text-accent" : down ? "text-danger" : "text-muted",
-                      )}
-                    >
-                      {m.digits > 0 ? m.current.toFixed(1) : formatNumber(m.current)}
-                    </span>
-                    <span
-                      className={cn(
-                        "inline-flex shrink-0 items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[10px] font-bold tabular",
-                        up ? "bg-accent/12 text-accent" : down ? "bg-danger/12 text-danger" : "bg-line text-faint",
-                      )}
-                    >
-                      {up ? (
-                        <ArrowUpRight size={11} className="shrink-0" />
-                      ) : down ? (
-                        <ArrowDownRight size={11} className="shrink-0" />
-                      ) : null}
-                      <span>{m.deltaLabel}</span>
-                    </span>
-                  </div>
+                    <span className="shrink-0 text-[10px] leading-none text-faint">→</span>
+                  </span>
+                  <span
+                    className={cn(
+                      "num shrink-0 text-[13px] font-semibold leading-tight",
+                      up ? "text-accent" : down ? "text-danger" : "text-muted",
+                    )}
+                  >
+                    {m.digits > 0 ? m.current.toFixed(1) : formatNumber(m.current)}
+                  </span>
+                  <span
+                    className={cn(
+                      "flex w-[68px] shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold tabular",
+                      up ? "bg-accent/12 text-accent" : down ? "bg-danger/12 text-danger" : "bg-line text-faint",
+                    )}
+                  >
+                    {up ? <ArrowUpRight size={11} className="shrink-0" /> : down ? <ArrowDownRight size={11} className="shrink-0" /> : null}
+                    <span className="min-w-0 flex-1 truncate">{m.deltaLabel}</span>
+                  </span>
                 </li>
               );
             })}
@@ -610,26 +604,26 @@ export default function HabitMatrixPage() {
               .map((d) => {
                 const s = daySummary(data, d.iso, today);
                 return (
-                  <li key={d.iso} className="flex min-w-0 items-center gap-2 px-3 py-2.5 sm:gap-3">
+                  <li key={d.iso} className="flex min-w-0 items-center gap-3 px-3 py-2.5">
                     <span className="min-w-0 flex-1 truncate text-[12px] font-medium text-ink">
                       {dayLabel(d.iso)}
                     </span>
                     <span className="shrink-0 tabular text-[11px] text-muted">
                       {d.done}/{d.planned}
                     </span>
-                    <span className="hidden h-1.5 w-12 shrink-0 overflow-hidden rounded-full bg-line min-[400px]:block sm:w-20">
+                    <span className="h-1.5 w-12 shrink-0 overflow-hidden rounded-full bg-line sm:w-20">
                       <span
                         className="block h-full rounded-full bg-accent"
                         style={{ width: `${Math.min(100, d.rate)}%` }}
                       />
                     </span>
-                    <span className="shrink-0 text-right text-[12px] font-semibold tabular text-ink">
+                    <span className="w-9 shrink-0 text-right text-[12px] font-semibold tabular text-ink">
                       {d.planned > 0 ? `${Math.round(d.rate)}%` : "—"}
                     </span>
-                    <span className="shrink-0 text-right text-[11px] font-semibold tabular text-accent">
+                    <span className="w-12 shrink-0 text-right text-[11px] font-semibold tabular text-accent">
                       +{formatNumber(s.xp)}
                     </span>
-                    <span className="shrink-0 text-right text-[11px] font-semibold tabular text-violet">
+                    <span className="w-9 shrink-0 text-right text-[11px] font-semibold tabular text-violet">
                       {s.score}
                     </span>
                   </li>
@@ -648,7 +642,7 @@ function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex min-w-0 items-baseline justify-between gap-2">
       <span className="min-w-0 flex-1 truncate text-[11px] text-faint">{label}</span>
-      <span className="shrink-0 truncate text-[12px] font-semibold tabular text-ink">{value}</span>
+      <span className="num shrink-0 break-words text-[12px] font-semibold leading-tight text-ink">{value}</span>
     </div>
   );
 }

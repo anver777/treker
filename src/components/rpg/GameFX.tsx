@@ -39,7 +39,7 @@ export function GameFX() {
   return (
     <>
       {/* XP gain toasts */}
-      <div className="fx-toast-top pointer-events-none fixed inset-x-0 z-[70] flex flex-col items-center gap-2 px-3 sm:inset-x-auto sm:right-5 sm:items-end">
+      <div className="pointer-events-none fixed inset-x-0 top-[calc(env(safe-area-inset-top,0px)+10px)] z-[70] flex flex-col items-center gap-2 px-3 sm:right-5 sm:left-auto sm:top-[calc(env(safe-area-inset-top,0px)+18px)] sm:items-end">
         <AnimatePresence>
           {enabled
             ? ui.xpGains.map((g) => (
@@ -49,21 +49,15 @@ export function GameFX() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.96 }}
                   transition={{ duration: 0.24 }}
-                  className="flex max-w-full items-center gap-2 rounded-full border border-accent/30 bg-surface/90 px-3 py-1.5 shadow-[0_8px_30px_-12px_var(--glow)] backdrop-blur"
+                  className="flex w-full max-w-full items-center gap-2 rounded-2xl border border-accent/30 bg-surface/90 px-3 py-2 shadow-[0_8px_30px_-12px_var(--glow)] backdrop-blur sm:w-auto sm:max-w-[320px] sm:rounded-full sm:py-1.5"
                 >
                   <Zap size={14} className="shrink-0 text-accent" />
                   <span className="text-sm font-semibold tabular text-accent">
                     +{formatNumber(g.amount)} XP
                   </span>
-                  {g.stat ? (
-                    <span className="max-w-[42vw] truncate text-[11px] text-muted sm:max-w-[220px]">
-                      {g.label}
-                    </span>
-                  ) : (
-                    <span className="max-w-[42vw] truncate text-[11px] text-muted sm:max-w-[220px]">
-                      {g.label}
-                    </span>
-                  )}
+                  <span className="min-w-0 flex-1 truncate text-[11px] text-muted sm:max-w-[210px]">
+                    {g.label}
+                  </span>
                 </motion.div>
               ))
             : null}
@@ -71,7 +65,7 @@ export function GameFX() {
       </div>
 
       {/* Stat level up toasts */}
-      <div className="fx-toast-bottom pointer-events-none fixed inset-x-0 z-[70] flex flex-col items-center gap-2 px-3 sm:left-6 sm:items-start">
+      <div className="pointer-events-none fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom,0px)+160px)] z-[70] flex flex-col items-center gap-2 px-3 sm:bottom-6 sm:left-6 sm:items-start">
         <AnimatePresence>
           {ui.statLevelUps.map((s) => {
             const meta = STATS[s.stat];
@@ -82,7 +76,7 @@ export function GameFX() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.96 }}
                 transition={{ duration: 0.28 }}
-                className="flex max-w-full items-center gap-2.5 rounded-2xl border px-3 py-2 backdrop-blur"
+                className="flex w-full max-w-full items-center gap-2.5 rounded-2xl border px-3 py-2 backdrop-blur sm:w-auto sm:max-w-[300px]"
                 style={{
                   borderColor: `${meta.color}55`,
                   background: `color-mix(in srgb, var(--surface) 88%, transparent)`,
@@ -95,11 +89,11 @@ export function GameFX() {
                 >
                   <Icon name={meta.icon} size={16} />
                 </span>
-                <span className="min-w-0">
-                  <span className="block text-sm font-semibold text-ink">
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold leading-tight text-ink">
                     {meta.short} +1
                   </span>
-                  <span className="block truncate text-[11px] text-faint">
+                  <span className="block break-words text-[11px] leading-tight text-faint">
                     {tr("fx.statNow", { stat: meta.label, n: s.level })}
                   </span>
                 </span>
@@ -125,7 +119,7 @@ export function GameFX() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.94, opacity: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="relative z-10 w-full max-w-sm overflow-hidden rounded-[24px] border border-accent/30 bg-surface/95 p-6 text-center shadow-[0_0_60px_-10px_var(--glow)]"
+              className="relative z-10 mx-auto w-full max-w-sm overflow-hidden rounded-[24px] border border-accent/30 bg-surface/95 p-5 text-center shadow-[0_0_60px_-10px_var(--glow)] sm:p-6"
             >
               <div
                 className="pointer-events-none absolute inset-x-0 -top-24 h-48 opacity-70 blur-3xl"
